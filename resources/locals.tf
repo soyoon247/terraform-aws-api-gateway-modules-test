@@ -19,9 +19,9 @@ locals {
 
   default_integration_response_map = tomap({
     200 = {
-      response_models     = {}
       response_parameters = {}
       selection_pattern   = null
+      response_templates  = {}
     }
   })
 
@@ -115,12 +115,12 @@ locals {
   integration_request_parameters = (
     var.integration_request_parameters != null ?
     (
-      local.is_proxy_type  || local.is_mock_type ?
+      local.is_proxy_type || local.is_mock_type ?
       var.integration_request_parameters :
       merge(var.integration_request_parameters, local.x_forwarded_for_integration_request_parameters)
     ) :
     (
-      local.is_proxy_type  || local.is_mock_type ?
+      local.is_proxy_type || local.is_mock_type ?
       (
         local.is_http_proxy_integration ?
         local.proxy_integration_request_parameters :

@@ -30,8 +30,8 @@ resource "aws_api_gateway_method_response" "method_response" {
   rest_api_id         = var.rest_api_id
   resource_id         = var.resource_id
   http_method         = var.method_http_method
-  response_parameters = each.value["response_parameters"]
-  response_models     = each.value["response_models"]
+  response_parameters = lookup(each.value, "response_parameters", null)
+  response_models     = lookup(each.value, "response_models", null)
   status_code         = each.key
   depends_on          = [aws_api_gateway_method.method, aws_api_gateway_integration.integration]
 }
@@ -43,8 +43,10 @@ resource "aws_api_gateway_integration_response" "integration_response" {
   rest_api_id         = var.rest_api_id
   resource_id         = var.resource_id
   http_method         = var.method_http_method
-  response_parameters = each.value["response_parameters"]
+  response_parameters = lookup(each.value, "response_parameters", null)
   status_code         = each.key
-  selection_pattern   = each.value["selection_pattern"]
+  selection_pattern   = lookup(each.value, "selection_pattern", null)
+  response_templates  = lookup(each.value, "response_templates", null)
   depends_on          = [aws_api_gateway_method_response.method_response, aws_api_gateway_integration.integration]
 }
+

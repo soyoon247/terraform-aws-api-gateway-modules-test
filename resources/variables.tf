@@ -102,9 +102,9 @@ variable "integration_request_templates" {
 # aws_api_gateway_integration_response에서 사용되는 변수들
 variable "integration_response_map" {
   type = map(object({
-    response_models     = optional(map(string))
     response_parameters = optional(map(string))
     selection_pattern   = optional(string)
+    response_templates  = optional(map(string))
   }))
-  description = "aws_api_gateway_integration_response의 status_code별 response_models, response parameters 정보를 나타내는 map"
+  description = "aws_api_gateway_integration_response의 status_code별 response_templates, response parameters, selection_pattern 정보를 나타내는 map"
 }
