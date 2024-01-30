@@ -69,21 +69,20 @@ locals {
   is_mock_type              = local.integration_type == "MOCK"
   is_http_proxy_integration = (local.is_any_method && local.is_proxy_type && var.path_part == "{proxy+}")
 
+  _method_request_parameters_when_not_null = merge(var.method_request_parameters, local.x_forwarded_for_method_request_parameters)
+  _method_request_parameters_when_null = (
+    local.is_http_proxy_integration ?
+    merge(local.proxy_method_request_parameters, local.x_forwarded_for_method_request_parameters) :
+    local.x_forwarded_for_method_request_parameters
+  )
+
   method_request_parameters = (
-    var.method_request_parameters != null ?
+    local.is_mock_type ?
+    var.method_request_parameters :
     (
-      local.is_proxy_type || local.is_mock_type ?
-      var.method_request_parameters :
-      merge(var.method_request_parameters, local.x_forwarded_for_method_request_parameters)
-    ) :
-    (
-      local.is_proxy_type || local.is_mock_type ?
-      (
-        local.is_http_proxy_integration ?
-        local.proxy_method_request_parameters :
-        var.method_request_parameters
-      ) :
-      local.x_forwarded_for_method_request_parameters
+      var.method_request_parameters == null ?
+      local._method_request_parameters_when_null :
+      local._method_request_parameters_when_not_null
     )
   )
 
@@ -109,24 +108,22 @@ locals {
       local.proxy_integration_cache_key_parameters :
       null
     )
+  )
 
+  _integration_request_parameters_when_not_null = merge(var.integration_request_parameters, local.x_forwarded_for_integration_request_parameters)
+  _integration_request_parameters_when_null = (
+    local.is_http_proxy_integration ?
+    merge(local.proxy_integration_request_parameters, local.x_forwarded_for_integration_request_parameters) :
+    local.x_forwarded_for_integration_request_parameters
   )
 
   integration_request_parameters = (
-    var.integration_request_parameters != null ?
+    local.is_mock_type ?
+    var.integration_request_parameters :
     (
-      local.is_proxy_type || local.is_mock_type ?
-      var.integration_request_parameters :
-      merge(var.integration_request_parameters, local.x_forwarded_for_integration_request_parameters)
-    ) :
-    (
-      local.is_proxy_type || local.is_mock_type ?
-      (
-        local.is_http_proxy_integration ?
-        local.proxy_integration_request_parameters :
-        var.integration_request_parameters
-      ) :
-      local.x_forwarded_for_integration_request_parameters
+      var.integration_request_parameters == null ?
+      local._integration_request_parameters_when_null :
+      local._integration_request_parameters_when_not_null
     )
   )
 
