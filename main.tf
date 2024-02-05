@@ -18,13 +18,13 @@ module "_" {
   authorization             = lookup(each.value, "authorization", "NONE")
   authorizer_id             = lookup(each.value, "authorizer_id", null)
   method_request_parameters = lookup(each.value, "method_request_parameters", null)
+  method_operation_name     = lookup(each.value, "method_operation_name", null)
+  method_response_map       = lookup(each.value, "method_response_map", null)
 
-  method_response_map              = lookup(each.value, "method_response_map", null)
   integration_cache_key_parameters = lookup(each.value, "integration_cache_key_parameters", null)
   integration_request_parameters   = lookup(each.value, "integration_request_parameters", null)
   integration_connection_type      = lookup(each.value, "integration_connection_type", "INTERNET")
   integration_http_method          = lookup(each.value, "integration_http_method", null)
-
   integration_passthrough_behavior = lookup(each.value, "integration_passthrough_behavior", "WHEN_NO_MATCH")
   integration_timeout_milliseconds = lookup(each.value, "integration_timeout_milliseconds", 29000)
   integration_type                 = lookup(each.value, "integration_type", "HTTP_PROXY")

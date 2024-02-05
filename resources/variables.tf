@@ -41,6 +41,11 @@ variable "method_request_parameters" {
   description = "aws_api_gateway_method의 request parameters (paths, query strings and headers) 정보를 나타내는 map"
 }
 
+variable "method_operation_name" {
+  type        = string
+  description = "aws_api_gateway_method의 operation_name"
+}
+
 # aws_api_gateway_method_response에서 사용되는 변수들
 variable "method_response_map" {
   type = map(
