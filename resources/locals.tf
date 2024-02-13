@@ -61,7 +61,6 @@ locals {
   options_integration_request_templates = local.status_200_request_templates
 
   # variable 에 따라 값이 달라지는 부분
-
   is_options_method         = var.method_http_method == "OPTIONS"
   is_any_method             = var.method_http_method == "ANY"
   integration_type          = local.is_options_method ? "MOCK" : var.integration_type
@@ -69,20 +68,19 @@ locals {
   is_mock_type              = local.integration_type == "MOCK"
   is_http_proxy_integration = (local.is_any_method && local.is_proxy_type && var.path_part == "{proxy+}")
 
-  _method_request_parameters_when_not_null = merge(var.method_request_parameters, local.x_forwarded_for_method_request_parameters)
-  _method_request_parameters_when_null = (
-    local.is_http_proxy_integration ?
-    merge(local.proxy_method_request_parameters, local.x_forwarded_for_method_request_parameters) :
-    local.x_forwarded_for_method_request_parameters
+  _method_request_parameters_when_not_mock_type = (
+    var.method_request_parameters == null && local.is_http_proxy_integration ?
+    local.proxy_method_request_parameters :
+    var.method_request_parameters
   )
 
   method_request_parameters = (
     local.is_mock_type ?
     var.method_request_parameters :
     (
-      var.method_request_parameters == null ?
-      local._method_request_parameters_when_null :
-      local._method_request_parameters_when_not_null
+      local.is_proxy_type ?
+      local._method_request_parameters_when_not_mock_type :
+      merge(local._method_request_parameters_when_not_mock_type, local.x_forwarded_for_method_request_parameters)
     )
   )
 
@@ -110,20 +108,19 @@ locals {
     )
   )
 
-  _integration_request_parameters_when_not_null = merge(var.integration_request_parameters, local.x_forwarded_for_integration_request_parameters)
-  _integration_request_parameters_when_null = (
-    local.is_http_proxy_integration ?
-    merge(local.proxy_integration_request_parameters, local.x_forwarded_for_integration_request_parameters) :
-    local.x_forwarded_for_integration_request_parameters
+  _integration_request_parameters_when_not_mock_type = (
+    var.integration_request_parameters == null && local.is_http_proxy_integration ?
+    local.proxy_integration_request_parameters :
+    var.integration_request_parameters
   )
 
   integration_request_parameters = (
     local.is_mock_type ?
     var.integration_request_parameters :
     (
-      var.integration_request_parameters == null ?
-      local._integration_request_parameters_when_null :
-      local._integration_request_parameters_when_not_null
+        local.is_proxy_type ?
+        local._integration_request_parameters_when_not_mock_type :
+        merge(local._integration_request_parameters_when_not_mock_type, local.x_forwarded_for_integration_request_parameters)
     )
   )
 
