@@ -6,6 +6,7 @@ resource "aws_api_gateway_method" "method" {
   authorizer_id      = var.authorizer_id
   http_method        = var.method_http_method
   request_parameters = local.method_request_parameters
+  request_models     = var.method_request_models
   operation_name     = var.method_operation_name
 }
 
