@@ -19,6 +19,7 @@ module "_" {
   authorizer_id             = lookup(each.value, "authorizer_id", null)
   method_request_parameters = lookup(each.value, "method_request_parameters", null)
   method_operation_name     = lookup(each.value, "method_operation_name", null)
+  method_request_models     = lookup(each.value, "method_request_models", null)
   method_response_map       = lookup(each.value, "method_response_map", null)
 
   integration_cache_key_parameters = lookup(each.value, "integration_cache_key_parameters", null)

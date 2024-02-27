@@ -46,6 +46,11 @@ variable "method_operation_name" {
   description = "aws_api_gateway_method의 operation_name"
 }
 
+variable "method_request_models" {
+  type        = map(string)
+  description = "aws_api_gateway_method의 request_models"
+}
+
 # aws_api_gateway_method_response에서 사용되는 변수들
 variable "method_response_map" {
   type = map(
