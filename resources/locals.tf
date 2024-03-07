@@ -62,7 +62,7 @@ locals {
 
   # variable 에 따라 값이 달라지는 부분
   is_options_method         = var.method_http_method == "OPTIONS"
-  integration_type          = local.is_options_method ? "MOCK" : var.integration_type
+  integration_type          = var.integration_type != null ? var.integration_type : (local.is_options_method ? "MOCK" : "HTTP_PROXY")
   is_proxy_type             = local.integration_type == "HTTP_PROXY"
   is_mock_type              = local.integration_type == "MOCK"
   is_http_proxy_integration = (local.is_proxy_type && var.path_part == "{proxy+}")

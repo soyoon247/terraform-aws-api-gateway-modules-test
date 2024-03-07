@@ -28,7 +28,7 @@ module "_" {
   integration_http_method          = lookup(each.value, "integration_http_method", null)
   integration_passthrough_behavior = lookup(each.value, "integration_passthrough_behavior", "WHEN_NO_MATCH")
   integration_timeout_milliseconds = lookup(each.value, "integration_timeout_milliseconds", 29000)
-  integration_type                 = lookup(each.value, "integration_type", "HTTP_PROXY")
+  integration_type                 = lookup(each.value, "integration_type", null)
   integration_uri                  = lookup(each.value, "integration_uri", null)
   integration_request_templates    = lookup(each.value, "integration_request_templates", null)
   integration_response_map         = lookup(each.value, "integration_response_map", null)
