@@ -148,4 +148,6 @@ locals {
     var.integration_response_map :
     local.default_integration_response_map
   )
+
+  integration_depends_on = concat(var.resource_depends_on, [aws_api_gateway_method.method])
 }

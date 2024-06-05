@@ -24,7 +24,7 @@ resource "aws_api_gateway_integration" "integration" {
   uri                     = var.integration_uri
   request_parameters      = local.integration_request_parameters
   request_templates       = local.integration_request_templates
-  depends_on              = concat(var.resource_depends_on, [aws_api_gateway_method.method])
+  depends_on              = local.integration_depends_on
 }
 
 resource "aws_api_gateway_method_response" "method_response" {
