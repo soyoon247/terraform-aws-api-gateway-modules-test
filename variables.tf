@@ -24,3 +24,5 @@ variable "common_values" {
   description = "method가 공통으로 갖는 aws_api_gateway_method, aws_api_gateway_method_response, aws_api_gateway_integration, aws_api_gateway_interation_response의 attribute를 나타내는 map"
   default     = {}
 }
+
+

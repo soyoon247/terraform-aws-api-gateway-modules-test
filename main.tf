@@ -33,4 +33,5 @@ module "_" {
   integration_request_templates    = lookup(each.value, "integration_request_templates", null)
   integration_response_map         = lookup(each.value, "integration_response_map", null)
   depends_on                       = [aws_api_gateway_resource.resource]
+  resource_depends_on = [aws_api_gateway_resource.resource]
 }
