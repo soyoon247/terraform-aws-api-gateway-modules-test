@@ -143,13 +143,9 @@ locals {
     })
   }
 
-  integration_response_map_list = flatten(
-    values(local.integration_response_map)
-  )
+  integration_response_map_list = values(local.integration_response_map) # 나중에 concat
 
-  method_response_map_list = flatten(
-    values(local.method_response_map)
-  )
+  method_response_map_list = values(local.method_response_map)
 }
 
 resource "aws_api_gateway_method" "method" {
