@@ -122,6 +122,7 @@ locals {
       "method_http_method" = local.get_raw_value.method_http_method
     })
   }
+
   integration_response_map = {
     for key, value in local._integration_response_map : key => merge(value, {
       "status_code"        = key
@@ -182,25 +183,25 @@ resource "aws_api_gateway_integration" "integration" {
 }
 
 resource "aws_api_gateway_method_response" "method_response" {
-  for_each            = local.method_response_map_list
+  for_each            = { for map_info in local.method_response_map_list : "${lookup(map_info, "status_code", "")}${lookup(map_info, "method_http_method", "")}" => map_info }
   rest_api_id         = var.rest_api_id
   resource_id         = aws_api_gateway_resource.resource.id
   http_method         = lookup(each.value, "method_http_method", null)
   response_parameters = lookup(each.value, "response_parameters", null)
   response_models     = lookup(each.value, "response_models", null)
-  status_code         = each.key
+  status_code         = lookup(each.value, "status_code", null)
   depends_on          = [aws_api_gateway_resource.resource, aws_api_gateway_method.method]
 }
 
 
 
 resource "aws_api_gateway_integration_response" "integration_response" {
-  for_each            = local.integration_response_map_list
+  for_each            = { for map_info in local.integration_response_map_list : "${lookup(map_info, "status_code", "")}${lookup(map_info, "method_http_method", "")}" => map_info }
   rest_api_id         = var.rest_api_id
   resource_id         = aws_api_gateway_resource.resource.id
   http_method         = lookup(each.value, "method_http_method", null)
   response_parameters = lookup(each.value, "response_parameters", null)
-  status_code         = each.key
+  status_code         = lookup(each.value, "status_code", null)
   selection_pattern   = lookup(each.value, "selection_pattern", null)
   response_templates  = lookup(each.value, "response_templates", null)
   depends_on          = [aws_api_gateway_resource.resource, aws_api_gateway_integration.integration]
