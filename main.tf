@@ -5,9 +5,10 @@ resource "aws_api_gateway_resource" "resource" {
 }
 
 locals {
-  get_values = merge(lookup(var.method_values, "GET", {}), var.common_values)
+#  get_values = merge(lookup(var.method_values, "GET", {}), var.common_values)
+  get_values = lookup(var.method_values, "GET", {})
   get_raw_value = {
-    method_http_method               = lookup(get_values, "method_http_method", null)
+    method_http_method               = "GET"
     api_key_required                 = lookup(get_values, "api_key_required", "false")
     authorization                    = lookup(get_values, "authorization", "NONE")
     authorizer_id                    = lookup(get_values, "authorizer_id", null)
