@@ -5,7 +5,7 @@ resource "aws_api_gateway_resource" "resource" {
 }
 
 locals {
-#  get_values = merge(lookup(var.method_values, "GET", {}), var.common_values)
+  #  get_values = merge(lookup(var.method_values, "GET", {}), var.common_values)
   get_values = lookup(var.method_values, "GET", {})
   get_raw_value = {
     method_http_method               = "GET"
@@ -117,32 +117,38 @@ locals {
 
 
   method_response_map = {
-    for key, value in local._method_response_map : key => merge(value, { "method_http_method" = local.get_raw_value.method_http_method })
+    for key, value in local._method_response_map : key => merge(value, {
+      "status_code"        = key
+      "method_http_method" = local.get_raw_value.method_http_method
+    })
   }
   integration_response_map = {
-    for key, value in local._integration_response_map : key => merge(value, { "method_http_method" = local.get_raw_value.method_http_method })
+    for key, value in local._integration_response_map : key => merge(value, {
+      "status_code"        = key
+      "method_http_method" = local.get_raw_value.method_http_method
+    })
   }
 
 
 
   value_map = {
     "GET" = merge(local.get_raw_value, {
-        "method_request_parameters" = local.method_request_parameters,
-        "method_response_map"       = local.method_response_map,
-        "integration_cache_key_parameters" = local.integration_cache_key_parameters,
-        "integration_request_parameters"   = local.integration_request_parameters,
-        "integration_http_method"          = local.integration_http_method,
-        "integration_request_templates"    = local.integration_request_templates,
-        "integration_response_map"         = local.integration_response_map
+      "method_request_parameters"        = local.method_request_parameters,
+      "method_response_map"              = local.method_response_map,
+      "integration_cache_key_parameters" = local.integration_cache_key_parameters,
+      "integration_request_parameters"   = local.integration_request_parameters,
+      "integration_http_method"          = local.integration_http_method,
+      "integration_request_templates"    = local.integration_request_templates,
+      "integration_response_map"         = local.integration_response_map
     })
   }
 
   integration_response_map_list = flatten(
-    local.integration_response_map
+    values(local.integration_response_map)
   )
 
   method_response_map_list = flatten(
-    local.method_response_map
+    values(local.method_response_map)
   )
 }
 
