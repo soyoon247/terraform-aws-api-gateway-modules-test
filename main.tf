@@ -160,7 +160,6 @@ resource "aws_api_gateway_method" "method" {
   request_parameters = lookup(each.value, "method_request_parameters", null)
   request_models     = lookup(each.value, "method_request_models", null)
   operation_name     = lookup(each.value, "method_operation_name", null)
-  depends_on         = [aws_api_gateway_resource.resource]
 }
 
 resource "aws_api_gateway_integration" "integration" {
@@ -190,7 +189,6 @@ resource "aws_api_gateway_method_response" "method_response" {
   response_parameters = lookup(each.value, "response_parameters", null)
   response_models     = lookup(each.value, "response_models", null)
   status_code         = lookup(each.value, "status_code", null)
-  depends_on          = [aws_api_gateway_resource.resource, aws_api_gateway_method.method]
 }
 
 
