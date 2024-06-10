@@ -118,8 +118,3 @@ variable "integration_response_map" {
   }))
   description = "aws_api_gateway_integration_response의 status_code별 response_templates, response parameters, selection_pattern 정보를 나타내는 map"
 }
-
-variable "resource_depends_on" {
-    type        = list(any)
-    default     = []
-}

@@ -117,9 +117,9 @@ locals {
     local.is_mock_type ?
     var.integration_request_parameters :
     (
-        local.is_proxy_type ?
-        local._integration_request_parameters_when_not_mock_type :
-        merge(local._integration_request_parameters_when_not_mock_type, local.x_forwarded_for_integration_request_parameters)
+      local.is_proxy_type ?
+      local._integration_request_parameters_when_not_mock_type :
+      merge(local._integration_request_parameters_when_not_mock_type, local.x_forwarded_for_integration_request_parameters)
     )
   )
 
@@ -149,5 +149,4 @@ locals {
     local.default_integration_response_map
   )
 
-  integration_depends_on = concat(var.resource_depends_on, [aws_api_gateway_method.method])
 }
