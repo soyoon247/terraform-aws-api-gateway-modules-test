@@ -41,7 +41,7 @@ locals {
 
   method_request_parameters = (
     local.is_mock_type ?
-    local.method_request_parameters :
+    local.get_raw_value.method_request_parameters :
     (
       local.is_proxy_type ?
       local._method_request_parameters_when_not_mock_type :
